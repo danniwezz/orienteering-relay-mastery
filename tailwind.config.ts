@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,32 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Orienteering-specific colors
+				forest: {
+					DEFAULT: '#2D5B2D', // Deep forest green
+					light: '#3E7B3E',
+					dark: '#1A4E1A',
+				},
+				terrain: {
+					DEFAULT: '#8C6B3F', // Earth brown
+					light: '#AA8655',
+					dark: '#6E5230',
+				},
+				compass: {
+					DEFAULT: '#E67E22', // Compass orange
+					light: '#F39C12',
+					dark: '#D35400',
+				},
+				contour: {
+					DEFAULT: '#795548', // Contour line brown
+					light: '#8D6E63',
+					dark: '#5D4037',
+				},
+				water: {
+					DEFAULT: '#3498DB', // Water blue
+					light: '#5DADE2',
+					dark: '#2980B9',
 				}
 			},
 			borderRadius: {
@@ -84,11 +111,20 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				'pulse-slow': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.8' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-slow': 'pulse-slow 3s infinite',
+			},
+			backgroundImage: {
+				'topo-pattern': "url('/topo-bg.svg')",
+				'map-texture': "url('/map-texture.png')",
 			}
 		}
 	},
