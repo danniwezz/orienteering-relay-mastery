@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MapPin, Calendar, Users } from 'lucide-react';
@@ -11,9 +12,9 @@ interface RelayCardProps {
 }
 
 const statusColors = {
-  'Upcoming': 'bg-blue-500',
-  'Active': 'bg-green-500',
-  'Completed': 'bg-gray-500',
+  'Upcoming': 'bg-blue-500 text-white',
+  'Active': 'bg-green-500 text-white',
+  'Completed': 'bg-gray-500 text-white',
 };
 
 const RelayCard = ({ relay }: RelayCardProps) => {
@@ -32,10 +33,10 @@ const RelayCard = ({ relay }: RelayCardProps) => {
   };
 
   return (
-    <Card className="overflow-hidden border-terrain/20 transition-all duration-200 hover:shadow-md hover:border-terrain/40 backdrop-blur-sm bg-card/80">
+    <Card className="overflow-hidden border-terrain/20 transition-all duration-200 hover:shadow-md hover:border-terrain/40 backdrop-blur-sm bg-card/90">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg font-bold text-primary">{relay.name}</CardTitle>
+          <CardTitle className="text-lg font-bold text-foreground">{relay.name}</CardTitle>
           <Badge className={`${statusColors[relay.status]} text-xs px-2 py-1 rounded-full`}>
             {relay.status}
           </Badge>
@@ -49,7 +50,7 @@ const RelayCard = ({ relay }: RelayCardProps) => {
       </CardHeader>
       <CardContent>
         <div className="mt-1">
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between text-sm text-foreground">
             <span className="flex items-center gap-1">
               <Users className="h-4 w-4" /> 
               {totalRunners} runners assigned

@@ -63,16 +63,16 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Orienteering-specific colors
+				// Orienteering-specific colors - improved for contrast
 				forest: {
 					DEFAULT: '#2D5B2D', // Deep forest green
-					light: '#3E7B3E',
+					light: '#4a8c4a', // Lighter with better contrast
 					dark: '#1A4E1A',
 				},
 				terrain: {
-					DEFAULT: '#8C6B3F', // Earth brown
-					light: '#AA8655',
-					dark: '#6E5230',
+					DEFAULT: '#AA8655', // Earth brown - lightened for better contrast
+					light: '#C4A078',
+					dark: '#8C6B3F',
 				},
 				compass: {
 					DEFAULT: '#E67E22', // Compass orange
@@ -80,9 +80,9 @@ export default {
 					dark: '#D35400',
 				},
 				contour: {
-					DEFAULT: '#795548', // Contour line brown
-					light: '#8D6E63',
-					dark: '#5D4037',
+					DEFAULT: '#9B7B68', // Contour line brown - lightened for contrast
+					light: '#B08D7A',
+					dark: '#795548',
 				},
 				water: {
 					DEFAULT: '#3498DB', // Water blue

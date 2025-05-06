@@ -11,6 +11,7 @@ import Index from "./pages/Index";
 import Runners from "./pages/Runners";
 import Clubs from "./pages/Clubs";
 import RelayDetail from "./pages/RelayDetail";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
                 <Route path="/runners" element={<Runners />} />
                 <Route path="/clubs" element={<Clubs />} />
                 <Route path="/relay/:relayId" element={<RelayDetail />} />
+                <Route path="/settings" element={<Settings />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
