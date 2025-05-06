@@ -76,7 +76,7 @@ const Login = () => {
                     {...register("email", { required: "Email is required" })}
                   />
                   {errors.email && (
-                    <p className="text-sm text-destructive">{errors.email.message}</p>
+                    <p className="text-sm text-destructive">{errors.email.message?.toString()}</p>
                   )}
                 </div>
                 <div className="space-y-2">
@@ -90,7 +90,7 @@ const Login = () => {
                     {...register("password", { required: "Password is required" })}
                   />
                   {errors.password && (
-                    <p className="text-sm text-destructive">{errors.password.message}</p>
+                    <p className="text-sm text-destructive">{errors.password.message?.toString()}</p>
                   )}
                 </div>
                 <Button type="submit" className="w-full">

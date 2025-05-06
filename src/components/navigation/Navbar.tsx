@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, Users, List, Trophy, Settings, MapPin, Running } from 'lucide-react';
+import { Menu, Users, List, Trophy, Settings, MapPin, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -32,7 +32,7 @@ const Navbar = () => {
                   <div className="bg-compass"></div>
                 </div>
                 {/* Overlapping Runner */}
-                <Running className="absolute -right-2 -bottom-2 h-6 w-6 text-primary bg-white rounded-full p-0.5" />
+                <Activity className="absolute -right-2 -bottom-2 h-6 w-6 text-primary bg-white rounded-full p-0.5" />
               </div>
             </div>
             <span className="text-xl font-bold">OLMan25</span>

@@ -74,7 +74,7 @@ const SubmissionForm = ({ relayId, onClose }: SubmissionFormProps) => {
                 {...register("firstName", { required: "First name is required" })}
               />
               {errors.firstName && (
-                <p className="text-sm text-destructive">{errors.firstName.message}</p>
+                <p className="text-sm text-destructive">{errors.firstName.message?.toString()}</p>
               )}
             </div>
             <div className="space-y-2">
@@ -85,7 +85,7 @@ const SubmissionForm = ({ relayId, onClose }: SubmissionFormProps) => {
                 {...register("lastName", { required: "Last name is required" })}
               />
               {errors.lastName && (
-                <p className="text-sm text-destructive">{errors.lastName.message}</p>
+                <p className="text-sm text-destructive">{errors.lastName.message?.toString()}</p>
               )}
             </div>
           </div>
@@ -100,7 +100,7 @@ const SubmissionForm = ({ relayId, onClose }: SubmissionFormProps) => {
                 {...register("email", { required: "Email is required" })}
               />
               {errors.email && (
-                <p className="text-sm text-destructive">{errors.email.message}</p>
+                <p className="text-sm text-destructive">{errors.email.message?.toString()}</p>
               )}
             </div>
             <div className="space-y-2">
@@ -122,7 +122,7 @@ const SubmissionForm = ({ relayId, onClose }: SubmissionFormProps) => {
                 {...register("club", { required: "Club is required" })}
               />
               {errors.club && (
-                <p className="text-sm text-destructive">{errors.club.message}</p>
+                <p className="text-sm text-destructive">{errors.club.message?.toString()}</p>
               )}
             </div>
             <div className="space-y-2">
@@ -138,7 +138,7 @@ const SubmissionForm = ({ relayId, onClose }: SubmissionFormProps) => {
                 })}
               />
               {errors.age && (
-                <p className="text-sm text-destructive">{errors.age.message}</p>
+                <p className="text-sm text-destructive">{errors.age.message?.toString()}</p>
               )}
             </div>
             <div className="space-y-2">
@@ -156,7 +156,7 @@ const SubmissionForm = ({ relayId, onClose }: SubmissionFormProps) => {
                 </SelectContent>
               </Select>
               {errors.gender && (
-                <p className="text-sm text-destructive">{errors.gender.message}</p>
+                <p className="text-sm text-destructive">{errors.gender.message?.toString()}</p>
               )}
             </div>
           </div>
@@ -177,8 +177,8 @@ const SubmissionForm = ({ relayId, onClose }: SubmissionFormProps) => {
               </SelectContent>
             </Select>
             {errors.experience && (
-              <p className="text-sm text-destructive">{errors.experience.message}</p>
-            )}
+              <p className="text-sm text-destructive">{errors.experience.message?.toString()}</p>
+              )}
           </div>
           
           <div className="space-y-2">
