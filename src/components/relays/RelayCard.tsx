@@ -1,6 +1,5 @@
-
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { MapPin, Calendar, Users } from 'lucide-react';
 import { Relay } from '@/types';
 import { useAppContext } from '@/contexts/AppContext';
