@@ -1,11 +1,14 @@
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { MapPin, Calendar, Users } from 'lucide-react';
 import { Relay } from '@/types';
 import { useAppContext } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import SubmissionForm from './SubmissionForm';
 
 interface RelayCardProps {
   relay: Relay;
@@ -20,6 +23,7 @@ const statusColors = {
 const RelayCard = ({ relay }: RelayCardProps) => {
   const { setSelectedRelay } = useAppContext();
   const navigate = useNavigate();
+  const [submissionDialogOpen, setSubmissionDialogOpen] = useState(false);
 
   const totalRunners = relay.legs.reduce(
     (sum, leg) => sum + (leg.assignedRunners?.length || 0), 0
@@ -65,15 +69,33 @@ const RelayCard = ({ relay }: RelayCardProps) => {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="pt-0">
+      <CardFooter className="pt-0 flex gap-2">
         <Button 
           variant="outline" 
           size="sm" 
           onClick={handleViewDetails}
-          className="w-full border-terrain/30 hover:border-terrain hover:bg-terrain/10"
+          className="flex-1 border-terrain/30 hover:border-terrain hover:bg-terrain/10"
         >
           View Details
         </Button>
+        
+        <Dialog open={submissionDialogOpen} onOpenChange={setSubmissionDialogOpen}>
+          <DialogTrigger asChild>
+            <Button 
+              variant="secondary" 
+              size="sm"
+              className="flex-1"
+            >
+              Submit Interest
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[700px]">
+            <SubmissionForm 
+              relayId={relay.id} 
+              onClose={() => setSubmissionDialogOpen(false)} 
+            />
+          </DialogContent>
+        </Dialog>
       </CardFooter>
     </Card>
   );

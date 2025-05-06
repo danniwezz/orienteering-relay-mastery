@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
@@ -5,14 +6,23 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { MapPin, Calendar, ArrowLeft, Users, Route, Mountain } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Form, FormField, FormItem, FormLabel, FormControl } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { MapPin, Calendar, ArrowLeft, Users, Route, Mountain, Plus, Edit } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { toast } from 'sonner';
 
 const RelayDetail = () => {
   const { relayId } = useParams<{ relayId: string }>();
   const navigate = useNavigate();
-  const { relays, runners, selectedRelay, setSelectedRelay } = useAppContext();
+  const { relays, runners, selectedRelay, setSelectedRelay, assignRunner, updateRelay } = useAppContext();
   const [activeTab, setActiveTab] = useState('overview');
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [assignDialogOpen, setAssignDialogOpen] = useState(false);
+  const [selectedLeg, setSelectedLeg] = useState<string | null>(null);
 
   useEffect(() => {
     if (relayId) {
@@ -20,6 +30,52 @@ const RelayDetail = () => {
       setSelectedRelay(foundRelay || null);
     }
   }, [relayId, relays, setSelectedRelay]);
+
+  const editForm = useForm({
+    defaultValues: {
+      name: selectedRelay?.name || '',
+      location: selectedRelay?.location || '',
+      date: selectedRelay?.date || '',
+      description: selectedRelay?.description || '',
+    }
+  });
+
+  useEffect(() => {
+    if (selectedRelay) {
+      editForm.reset({
+        name: selectedRelay.name,
+        location: selectedRelay.location,
+        date: selectedRelay.date,
+        description: selectedRelay.description || '',
+      });
+    }
+  }, [selectedRelay, editForm]);
+
+  const handleEditSubmit = (data) => {
+    if (!selectedRelay) return;
+    
+    const updatedRelay = {
+      ...selectedRelay,
+      name: data.name,
+      location: data.location,
+      date: data.date,
+      description: data.description,
+    };
+    
+    updateRelay(updatedRelay);
+    setEditDialogOpen(false);
+    toast.success("Relay updated successfully");
+  };
+
+  const handleDragEnd = (result) => {
+    if (!result.destination || !selectedLeg) return;
+    
+    const runnerId = result.draggableId;
+    const teamNumber = parseInt(result.destination.droppableId.replace('team-', ''));
+    
+    assignRunner(runnerId, selectedLeg, teamNumber);
+    toast.success("Runner assigned successfully");
+  };
 
   if (!selectedRelay) {
     return (
@@ -50,7 +106,15 @@ const RelayDetail = () => {
     (sum, leg) => sum + (leg.assignedRunners?.length || 0), 0
   );
   
-  const totalNeededRunners = selectedRelay.legs.length; // Simplified - in reality might be more complex
+  const totalNeededRunners = selectedRelay.legs.length;
+  
+  const availableRunners = runners.filter(runner => {
+    // Filter out runners that are already assigned to any leg in this relay
+    const isAlreadyAssigned = selectedRelay.legs.some(leg => 
+      leg.assignedRunners?.some(assignment => assignment.runnerId === runner.id)
+    );
+    return !isAlreadyAssigned;
+  });
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -72,18 +136,182 @@ const RelayDetail = () => {
                 <MapPin className="h-4 w-4 mr-1" />
                 {selectedRelay.location}
               </span>
-              <Badge className={`${statusColors[selectedRelay.status]} text-xs px-2 py-1 rounded-full`}>
+              <Badge className={`${statusColors[selectedRelay.status]} text-white text-xs px-2 py-1 rounded-full`}>
                 {selectedRelay.status}
               </Badge>
             </div>
           </div>
 
           <div className="flex gap-2">
-            <Button variant="outline">Edit Relay</Button>
-            <Button className="bg-compass hover:bg-compass-dark">
-              <Users className="mr-2 h-4 w-4" />
-              Assign Runners
-            </Button>
+            <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline">
+                  <Edit className="mr-2 h-4 w-4" />
+                  Edit Relay
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Edit Relay</DialogTitle>
+                </DialogHeader>
+                <Form {...editForm}>
+                  <form onSubmit={editForm.handleSubmit(handleEditSubmit)} className="space-y-4">
+                    <FormField
+                      control={editForm.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Name</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={editForm.control}
+                      name="location"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Location</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={editForm.control}
+                      name="date"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Date</FormLabel>
+                          <FormControl>
+                            <Input {...field} type="date" />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={editForm.control}
+                      name="description"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Description</FormLabel>
+                          <FormControl>
+                            <Input {...field} />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    <div className="flex justify-end">
+                      <Button type="submit">Save Changes</Button>
+                    </div>
+                  </form>
+                </Form>
+              </DialogContent>
+            </Dialog>
+            
+            <Dialog open={assignDialogOpen} onOpenChange={setAssignDialogOpen}>
+              <DialogTrigger asChild>
+                <Button className="bg-compass hover:bg-compass-dark">
+                  <Users className="mr-2 h-4 w-4" />
+                  Assign Runners
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[700px]">
+                <DialogHeader>
+                  <DialogTitle>Assign Runners</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 mt-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <h3 className="font-medium mb-2">Select a Leg</h3>
+                      <div className="space-y-2">
+                        {selectedRelay.legs.map((leg) => (
+                          <div 
+                            key={leg.id}
+                            onClick={() => setSelectedLeg(leg.id)}
+                            className={`p-2 border rounded-md cursor-pointer ${
+                              selectedLeg === leg.id ? 'bg-primary/20 border-primary' : 'hover:bg-muted'
+                            }`}
+                          >
+                            <div className="flex justify-between">
+                              <span>Leg {leg.legNumber}</span>
+                              <Badge className={`${difficultyColors[leg.difficulty]} text-xs px-2 py-0.5 rounded-full text-black`}>
+                                {leg.difficulty}
+                              </Badge>
+                            </div>
+                            <div className="text-sm text-muted-foreground">{leg.distance} km</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {selectedLeg && (
+                      <DragDropContext onDragEnd={handleDragEnd}>
+                        <div>
+                          <h3 className="font-medium mb-2">Drag Runners to Teams</h3>
+                          <div className="space-y-4">
+                            <Droppable droppableId="runner-pool">
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.droppableProps}
+                                  className="p-2 border border-dashed rounded-md bg-muted/50 min-h-[100px]"
+                                >
+                                  <h4 className="text-sm font-medium mb-2">Available Runners</h4>
+                                  {availableRunners.length > 0 ? (
+                                    <div className="space-y-1">
+                                      {availableRunners.map((runner, index) => (
+                                        <Draggable key={runner.id} draggableId={runner.id} index={index}>
+                                          {(provided) => (
+                                            <div
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                              className="bg-card p-2 rounded-md text-sm"
+                                            >
+                                              {runner.name} ({runner.club})
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    <div className="text-sm text-muted-foreground text-center py-4">
+                                      No available runners
+                                    </div>
+                                  )}
+                                  {provided.placeholder}
+                                </div>
+                              )}
+                            </Droppable>
+                            
+                            <div className="grid grid-cols-2 gap-2">
+                              {[1, 2].map(teamNum => (
+                                <Droppable droppableId={`team-${teamNum}`} key={teamNum}>
+                                  {(provided) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.droppableProps}
+                                      className="p-2 border border-dashed rounded-md min-h-[80px]"
+                                    >
+                                      <h4 className="text-sm font-medium mb-2">Team {teamNum}</h4>
+                                      {provided.placeholder}
+                                    </div>
+                                  )}
+                                </Droppable>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </DragDropContext>
+                    )}
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </div>

@@ -37,34 +37,34 @@
   }
 
   .dark {
-    /* Improved contrast for dark mode */
-    --background: 120 15% 10%;
+    /* Greatly improved contrast for dark mode */
+    --background: 120 15% 15%;
     --foreground: 210 40% 98%;
 
-    --card: 112 15% 15%; /* Lightened for better contrast */
-    --card-foreground: 210 40% 98%;
+    --card: 112 15% 20%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 112 15% 15%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 112 15% 20%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 142 60% 55%; /* Brightened primary color */
+    --primary: 142 70% 60%;
     --primary-foreground: 144 80% 10%;
 
-    --secondary: 35 70% 50%; /* More vibrant secondary */
+    --secondary: 35 80% 60%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 112 15% 25%; /* Lighter muted background */
-    --muted-foreground: 215 20.2% 75%; /* Brighter muted text */
+    --muted: 112 15% 30%;
+    --muted-foreground: 215 20.2% 80%;
 
-    --accent: 24 95% 60%; /* Brighter accent */
+    --accent: 24 95% 65%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 50.6%; /* More visible destructive */
+    --destructive: 0 62.8% 60.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 112 15% 30%; /* More visible borders */
-    --input: 112 15% 30%;
-    --ring: 142 70% 60%; /* Brighter ring for focus states */
+    --border: 112 15% 40%;
+    --input: 112 15% 40%;
+    --ring: 142 70% 60%;
   }
 }
 
@@ -100,4 +100,21 @@
 
 .compass-gradient {
   background: linear-gradient(135deg, #E67E22 0%, #F39C12 100%);
+}
+
+/* Orienteering Control Icon Animation */
+.control-icon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
 }
