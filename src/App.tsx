@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,15 +15,27 @@ import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 
+// Translations
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n/config';
+import { TranslationErrorBoundary } from './components/error/TranslationErrorBoundary';
+import { FormatProvider } from './components/providers/FormatProvider';
+
 const queryClient = new QueryClient();
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  // Check if user is logged in
+
   useEffect(() => {
-    // For demo purposes, we'll consider the user authenticated by default
-    // In a real app, we'd check for a token in localStorage or cookies
+    // Initialize language from localStorage or browser preference
+    const savedLanguage = localStorage.getItem('language');
+    const browserLanguage = navigator.language.split('-')[0];
+    const initialLanguage = savedLanguage || (browserLanguage === 'sv' ? 'sv' : 'en');
+
+    i18n.changeLanguage(initialLanguage);
+    localStorage.setItem('language', initialLanguage);
+
+    // For demo purposes, consider user authenticated
     setIsAuthenticated(true);
   }, []);
 
@@ -34,48 +45,54 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AppProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <div className="min-h-screen flex flex-col bg-background dark">
-              {isAuthenticated && <Navbar />}
-              <main className="flex-1">
-                <Routes>
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/" element={
-                    <ProtectedRoute>
-                      <Index />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/runners" element={
-                    <ProtectedRoute>
-                      <Runners />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/clubs" element={
-                    <ProtectedRoute>
-                      <Clubs />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/relay/:relayId" element={
-                    <ProtectedRoute>
-                      <RelayDetail />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/settings" element={
-                    <ProtectedRoute>
-                      <Settings />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-            </div>
-          </BrowserRouter>
-        </TooltipProvider>
-      </AppProvider>
+      <TranslationErrorBoundary>
+        <I18nextProvider i18n={i18n}>
+          <AppProvider>
+            <FormatProvider>
+              <TooltipProvider>
+                <Toaster />
+                <Sonner />
+                <BrowserRouter>
+                  <div className="min-h-screen flex flex-col bg-background dark">
+                    {isAuthenticated && <Navbar />}
+                    <main className="flex-1">
+                      <Routes>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/" element={
+                          <ProtectedRoute>
+                            <Index />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="/runners" element={
+                          <ProtectedRoute>
+                            <Runners />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="/clubs" element={
+                          <ProtectedRoute>
+                            <Clubs />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="/relay/:relayId" element={
+                          <ProtectedRoute>
+                            <RelayDetail />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="/settings" element={
+                          <ProtectedRoute>
+                            <Settings />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
+                    </main>
+                  </div>
+                </BrowserRouter>
+              </TooltipProvider>
+            </FormatProvider>
+          </AppProvider>
+        </I18nextProvider>
+      </TranslationErrorBoundary>
     </QueryClientProvider>
   );
 };

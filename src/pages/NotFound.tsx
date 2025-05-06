@@ -1,12 +1,15 @@
-
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+import { ArrowLeft } from 'lucide-react';
 
 const NotFound = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     console.error(
@@ -23,16 +26,15 @@ const NotFound = () => {
             <MapPin className="h-12 w-12 text-forest-dark" />
           </div>
         </div>
-        <h1 className="text-4xl font-bold mt-6 mb-4 text-white">Off the Map!</h1>
+        <h1 className="text-4xl font-bold mt-6 mb-4 text-white">{t('notFound.title')}</h1>
         <p className="text-xl text-white/80 mb-8">
-          Looks like you've wandered off the trail. This checkpoint doesn't exist on our orienteering map.
+          {t('notFound.description')}
         </p>
         <div className="contour-line mb-8"></div>
-        <Link to="/">
-          <Button className="bg-compass hover:bg-compass-dark text-white">
-            Return to Base Camp
-          </Button>
-        </Link>
+        <Button onClick={() => navigate('/')} className="bg-compass hover:bg-compass-dark text-white">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {t('notFound.backToHome')}
+        </Button>
       </div>
     </div>
   );

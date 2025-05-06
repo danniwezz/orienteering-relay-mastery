@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -9,16 +8,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LogIn, Mail } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { useLanguage } from "@/hooks/useLanguage";
 
 const Login = () => {
   const navigate = useNavigate();
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const { t } = useLanguage();
 
   const onSubmit = (data) => {
     console.log('Auth data:', data);
     toast.success(`${authMode === 'login' ? 'Logged in' : 'Registered'} successfully!`);
-    
+
     // In a real app, we would send auth request to backend
     // For now, just navigate to home page
     setTimeout(() => {
@@ -29,7 +30,7 @@ const Login = () => {
   const handleOAuthLogin = (provider: string) => {
     toast.info(`Logging in with ${provider}...`);
     // In a real app, we would redirect to OAuth provider
-    
+
     // For demo, simulate successful login after a delay
     setTimeout(() => {
       toast.success(`Logged in with ${provider}`);
@@ -54,26 +55,26 @@ const Login = () => {
               </div>
             </div>
           </div>
-          <CardTitle className="text-2xl">Welcome to OLMan25</CardTitle>
+          <CardTitle className="text-2xl">{t('auth.welcome')}</CardTitle>
           <CardDescription>
-            Orienteering Relay Management System
+            {t('auth.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
           <Tabs defaultValue="signin" onValueChange={(v) => setAuthMode(v === 'signin' ? 'login' : 'register')}>
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Create Account</TabsTrigger>
+              <TabsTrigger value="signin">{t('auth.signIn')}</TabsTrigger>
+              <TabsTrigger value="signup">{t('auth.createAccount')}</TabsTrigger>
             </TabsList>
             <TabsContent value="signin">
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input 
-                    id="email" 
-                    type="email" 
-                    placeholder="m.andersson@example.com" 
-                    {...register("email", { required: "Email is required" })}
+                  <Label htmlFor="email">{t('auth.email')}</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="m.andersson@example.com"
+                    {...register("email", { required: t('auth.emailRequired') })}
                   />
                   {errors.email && (
                     <p className="text-sm text-destructive">{errors.email.message?.toString()}</p>
@@ -81,20 +82,20 @@ const Login = () => {
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="password">Password</Label>
-                    <Button variant="link" className="p-0 h-auto text-xs">Forgot password?</Button>
+                    <Label htmlFor="password">{t('auth.password')}</Label>
+                    <Button variant="link" className="p-0 h-auto text-xs">{t('auth.forgotPassword')}</Button>
                   </div>
-                  <Input 
-                    id="password" 
-                    type="password" 
-                    {...register("password", { required: "Password is required" })}
+                  <Input
+                    id="password"
+                    type="password"
+                    {...register("password", { required: t('auth.passwordRequired') })}
                   />
                   {errors.password && (
                     <p className="text-sm text-destructive">{errors.password.message?.toString()}</p>
                   )}
                 </div>
                 <Button type="submit" className="w-full">
-                  <LogIn className="mr-2 h-4 w-4" /> Sign In
+                  <LogIn className="mr-2 h-4 w-4" /> {t('auth.signIn')}
                 </Button>
               </form>
             </TabsContent>
@@ -102,37 +103,37 @@ const Login = () => {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="firstName">First name</Label>
-                    <Input 
-                      id="firstName" 
-                      {...register("firstName", { required: "First name is required" })}
+                    <Label htmlFor="firstName">{t('auth.firstName')}</Label>
+                    <Input
+                      id="firstName"
+                      {...register("firstName", { required: t('auth.firstNameRequired') })}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Last name</Label>
-                    <Input 
-                      id="lastName" 
-                      {...register("lastName", { required: "Last name is required" })}
+                    <Label htmlFor="lastName">{t('auth.lastName')}</Label>
+                    <Input
+                      id="lastName"
+                      {...register("lastName", { required: t('auth.lastNameRequired') })}
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input 
-                    id="email" 
-                    type="email" 
-                    {...register("email", { required: "Email is required" })}
+                  <Label htmlFor="email">{t('auth.email')}</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    {...register("email", { required: t('auth.emailRequired') })}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input 
-                    id="password" 
-                    type="password" 
-                    {...register("password", { required: "Password is required" })}
+                  <Label htmlFor="password">{t('auth.password')}</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    {...register("password", { required: t('auth.passwordRequired') })}
                   />
                 </div>
-                <Button type="submit" className="w-full">Create Account</Button>
+                <Button type="submit" className="w-full">{t('auth.createAccount')}</Button>
               </form>
             </TabsContent>
           </Tabs>
@@ -142,7 +143,7 @@ const Login = () => {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
+                {t('auth.orContinueWith')}
               </span>
             </div>
           </div>
@@ -191,10 +192,10 @@ const Login = () => {
         </CardContent>
         <CardFooter className="flex flex-col">
           <p className="mt-2 text-xs text-center text-muted-foreground">
-            By clicking continue, you agree to our{" "}
-            <Button variant="link" className="h-auto p-0 text-xs">Terms of Service</Button>
+            {t('auth.agreeTerms')}{" "}
+            <Button variant="link" className="h-auto p-0 text-xs">{t('auth.termsOfService')}</Button>
             {" "}and{" "}
-            <Button variant="link" className="h-auto p-0 text-xs">Privacy Policy</Button>.
+            <Button variant="link" className="h-auto p-0 text-xs">{t('auth.privacyPolicy')}</Button>.
           </p>
         </CardFooter>
       </Card>

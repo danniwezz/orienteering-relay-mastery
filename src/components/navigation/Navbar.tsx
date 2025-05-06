@@ -1,20 +1,23 @@
-
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, Users, List, Trophy, Settings, MapPin, Activity } from 'lucide-react';
+import { Menu, Users, List, Trophy, Settings, MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { Logo } from '@/components/ui/logo';
+import { useTranslation } from 'react-i18next';
+import LanguageIndicator from '../language/LanguageIndicator';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
   const navItems = [
-    { path: '/', label: 'Relays', icon: <MapPin className="h-5 w-5" /> },
-    { path: '/runners', label: 'Runners', icon: <Users className="h-5 w-5" /> },
-    { path: '/clubs', label: 'Clubs', icon: <List className="h-5 w-5" /> },
-    { path: '/results', label: 'Results', icon: <Trophy className="h-5 w-5" /> },
-    { path: '/settings', label: 'Settings', icon: <Settings className="h-5 w-5" /> },
+    { path: '/', label: t('navigation.relays'), icon: <MapPin className="h-5 w-5" /> },
+    { path: '/runners', label: t('navigation.runners'), icon: <Users className="h-5 w-5" /> },
+    { path: '/clubs', label: t('navigation.clubs'), icon: <List className="h-5 w-5" /> },
+    { path: '/results', label: t('navigation.results'), icon: <Trophy className="h-5 w-5" /> },
+    { path: '/settings', label: t('navigation.settings'), icon: <Settings className="h-5 w-5" /> },
   ];
 
   return (
@@ -22,19 +25,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2 text-white">
-            <div className="relative">
-              <div className="bg-white p-2 rounded-md">
-                {/* Orienteering Control */}
-                <div className="control-icon w-6 h-6 bg-white border-2 border-compass rounded-md grid grid-cols-2 grid-rows-2">
-                  <div className="bg-compass"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-white"></div>
-                  <div className="bg-compass"></div>
-                </div>
-                {/* Overlapping Runner */}
-                <Activity className="absolute -right-2 -bottom-2 h-6 w-6 text-primary bg-white rounded-full p-0.5" />
-              </div>
-            </div>
+            <Logo size={64} />
             <span className="text-xl font-bold">OLMan25</span>
           </Link>
 
@@ -55,17 +46,21 @@ const Navbar = () => {
                 <span>{item.label}</span>
               </Link>
             ))}
+            <LanguageIndicator />
           </div>
 
           {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden text-white hover:bg-forest-light"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <Menu className="h-6 w-6" />
-          </Button>
+          <div className="flex items-center space-x-2 md:hidden">
+            <LanguageIndicator />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-white hover:bg-forest-light"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <Menu className="h-6 w-6" />
+            </Button>
+          </div>
         </div>
 
         {/* Mobile navigation */}

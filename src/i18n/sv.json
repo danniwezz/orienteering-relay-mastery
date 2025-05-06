@@ -1,0 +1,111 @@
+{
+  "common": {
+    "loading": "Laddar...",
+    "error": "Fel",
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "submit": "Skicka",
+    "edit": "Redigera",
+    "delete": "Ta bort",
+    "back": "Tillbaka",
+    "next": "Nästa",
+    "previous": "Föregående",
+    "search": "Sök...",
+    "backToHome": "Tillbaka till startsidan",
+    "status": {
+      "all": "Alla",
+      "upcoming": "Kommande",
+      "active": "Aktiv",
+      "completed": "Avslutad"
+    }
+  },
+  "navigation": {
+    "relays": "Stafetter",
+    "runners": "Löpare",
+    "clubs": "Klubbar",
+    "results": "Resultat",
+    "settings": "Inställningar"
+  },
+  "relays": {
+    "title": "Stafetter",
+    "createNew": "Skapa ny stafett",
+    "viewDetails": "Visa detaljer",
+    "submitInterest": "Anmäl intresse",
+    "details": {
+      "legs": "Sträckor",
+      "runners": "Löpare",
+      "overview": "Översikt",
+      "description": "Beskrivning",
+      "location": "Plats",
+      "date": "Datum",
+      "totalLegs": "Totalt antal sträckor",
+      "runnersAssigned": "{{count}} löpare tilldelade",
+      "totalDistance": "Total sträcka",
+      "totalPositions": "{{count}} totala positioner"
+    }
+  },
+  "runners": {
+    "title": "Löpare",
+    "createNew": "Lägg till ny löpare",
+    "assignRunner": "Tilldela löpare",
+    "experience": {
+      "beginner": "Nybörjare",
+      "intermediate": "Medel",
+      "advanced": "Avancerad",
+      "elite": "Elit"
+    }
+  },
+  "settings": {
+    "title": "Inställningar",
+    "appearance": {
+      "title": "Utseende",
+      "description": "Anpassa hur OLMan25 ser ut",
+      "theme": {
+        "title": "Tema",
+        "light": "Ljust",
+        "dark": "Mörkt",
+        "system": "System"
+      }
+    },
+    "language": {
+      "title": "Språk & Region",
+      "description": "Välj ditt språk",
+      "select": "Välj språk"
+    },
+    "defaultClub": {
+      "title": "Standardklubb",
+      "description": "Välj din primära klubb",
+      "select": "Välj klubb"
+    }
+  },
+  "notFound": {
+    "title": "Utanför kartan!",
+    "description": "Det ser ut som du har vandrat bort från stigen. Denna kontroll finns inte på vår karta.",
+    "backToHome": "Tillbaka till startsidan"
+  },
+  "errors": {
+    "pageNotFound": "Tyvärr kunde vi inte hitta sidan du söker.",
+    "translationError": "Det uppstod ett fel vid laddning av översättningar.",
+    "generalError": "Ett fel uppstod.",
+    "tryAgain": "Försök igen"
+  },
+  "auth": {
+    "welcome": "Välkommen tillbaka",
+    "description": "Ange dina inloggningsuppgifter för att komma åt ditt konto",
+    "signIn": "Logga in",
+    "createAccount": "Skapa konto",
+    "email": "E-post",
+    "password": "Lösenord",
+    "forgotPassword": "Glömt lösenord?",
+    "emailRequired": "E-post krävs",
+    "passwordRequired": "Lösenord krävs",
+    "firstName": "Förnamn",
+    "lastName": "Efternamn",
+    "firstNameRequired": "Förnamn krävs",
+    "lastNameRequired": "Efternamn krävs",
+    "orContinueWith": "eller fortsätt med",
+    "agreeTerms": "Genom att skapa ett konto godkänner du våra",
+    "termsOfService": "användarvillkor",
+    "privacyPolicy": "integritetspolicy"
+  }
+}

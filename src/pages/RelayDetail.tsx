@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppContext } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
@@ -14,6 +13,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 const RelayDetail = () => {
   const { relayId } = useParams<{ relayId: string }>();
@@ -23,6 +23,7 @@ const RelayDetail = () => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [selectedLeg, setSelectedLeg] = useState<string | null>(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (relayId) {
@@ -53,7 +54,7 @@ const RelayDetail = () => {
 
   const handleEditSubmit = (data) => {
     if (!selectedRelay) return;
-    
+
     const updatedRelay = {
       ...selectedRelay,
       name: data.name,
@@ -61,7 +62,7 @@ const RelayDetail = () => {
       date: data.date,
       description: data.description,
     };
-    
+
     updateRelay(updatedRelay);
     setEditDialogOpen(false);
     toast.success("Relay updated successfully");
@@ -69,10 +70,10 @@ const RelayDetail = () => {
 
   const handleDragEnd = (result) => {
     if (!result.destination || !selectedLeg) return;
-    
+
     const runnerId = result.draggableId;
     const teamNumber = parseInt(result.destination.droppableId.replace('team-', ''));
-    
+
     assignRunner(runnerId, selectedLeg, teamNumber);
     toast.success("Runner assigned successfully");
   };
@@ -80,10 +81,10 @@ const RelayDetail = () => {
   if (!selectedRelay) {
     return (
       <div className="container mx-auto px-4 py-12 text-center">
-        <h2 className="text-2xl font-bold mb-4">Relay not found</h2>
+        <h2 className="text-2xl font-bold mb-4">{t('relays.notFound')}</h2>
         <Button onClick={() => navigate('/')}>
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Relays
+          {t('common.back')}
         </Button>
       </div>
     );
@@ -105,12 +106,12 @@ const RelayDetail = () => {
   const totalAssignments = selectedRelay.legs.reduce(
     (sum, leg) => sum + (leg.assignedRunners?.length || 0), 0
   );
-  
+
   const totalNeededRunners = selectedRelay.legs.length;
-  
+
   const availableRunners = runners.filter(runner => {
     // Filter out runners that are already assigned to any leg in this relay
-    const isAlreadyAssigned = selectedRelay.legs.some(leg => 
+    const isAlreadyAssigned = selectedRelay.legs.some(leg =>
       leg.assignedRunners?.some(assignment => assignment.runnerId === runner.id)
     );
     return !isAlreadyAssigned;
@@ -121,9 +122,9 @@ const RelayDetail = () => {
       <div className="mb-6">
         <Button variant="ghost" onClick={() => navigate('/')} className="mb-4">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Relays
+          {t('common.back')}
         </Button>
-        
+
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl font-bold">{selectedRelay.name}</h1>
@@ -137,7 +138,7 @@ const RelayDetail = () => {
                 {selectedRelay.location}
               </span>
               <Badge className={`${statusColors[selectedRelay.status]} text-white text-xs px-2 py-1 rounded-full`}>
-                {selectedRelay.status}
+                {t(`common.status.${selectedRelay.status.toLowerCase()}`)}
               </Badge>
             </div>
           </div>
@@ -147,12 +148,12 @@ const RelayDetail = () => {
               <DialogTrigger asChild>
                 <Button variant="outline">
                   <Edit className="mr-2 h-4 w-4" />
-                  Edit Relay
+                  {t('common.edit')}
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                  <DialogTitle>Edit Relay</DialogTitle>
+                  <DialogTitle>{t('relays.edit.title')}</DialogTitle>
                 </DialogHeader>
                 <Form {...editForm}>
                   <form onSubmit={editForm.handleSubmit(handleEditSubmit)} className="space-y-4">
@@ -161,7 +162,7 @@ const RelayDetail = () => {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name</FormLabel>
+                          <FormLabel>{t('relays.edit.name')}</FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -173,7 +174,7 @@ const RelayDetail = () => {
                       name="location"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Location</FormLabel>
+                          <FormLabel>{t('relays.edit.location')}</FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -185,7 +186,7 @@ const RelayDetail = () => {
                       name="date"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Date</FormLabel>
+                          <FormLabel>{t('relays.edit.date')}</FormLabel>
                           <FormControl>
                             <Input {...field} type="date" />
                           </FormControl>
@@ -197,7 +198,7 @@ const RelayDetail = () => {
                       name="description"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Description</FormLabel>
+                          <FormLabel>{t('relays.edit.description')}</FormLabel>
                           <FormControl>
                             <Input {...field} />
                           </FormControl>
@@ -205,41 +206,40 @@ const RelayDetail = () => {
                       )}
                     />
                     <div className="flex justify-end">
-                      <Button type="submit">Save Changes</Button>
+                      <Button type="submit">{t('common.saveChanges')}</Button>
                     </div>
                   </form>
                 </Form>
               </DialogContent>
             </Dialog>
-            
+
             <Dialog open={assignDialogOpen} onOpenChange={setAssignDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="bg-compass hover:bg-compass-dark">
                   <Users className="mr-2 h-4 w-4" />
-                  Assign Runners
+                  {t('runners.assignRunner')}
                 </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[700px]">
                 <DialogHeader>
-                  <DialogTitle>Assign Runners</DialogTitle>
+                  <DialogTitle>{t('runners.assignRunner')}</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 mt-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <h3 className="font-medium mb-2">Select a Leg</h3>
+                      <h3 className="font-medium mb-2">{t('relays.details.selectLeg')}</h3>
                       <div className="space-y-2">
                         {selectedRelay.legs.map((leg) => (
-                          <div 
+                          <div
                             key={leg.id}
                             onClick={() => setSelectedLeg(leg.id)}
-                            className={`p-2 border rounded-md cursor-pointer ${
-                              selectedLeg === leg.id ? 'bg-primary/20 border-primary' : 'hover:bg-muted'
-                            }`}
+                            className={`p-2 border rounded-md cursor-pointer ${selectedLeg === leg.id ? 'bg-primary/20 border-primary' : 'hover:bg-muted'
+                              }`}
                           >
                             <div className="flex justify-between">
-                              <span>Leg {leg.legNumber}</span>
+                              <span>{t('relays.details.leg')} {leg.legNumber}</span>
                               <Badge className={`${difficultyColors[leg.difficulty]} text-xs px-2 py-0.5 rounded-full text-black`}>
-                                {leg.difficulty}
+                                {t(`relays.details.difficulty.${leg.difficulty.toLowerCase()}`)}
                               </Badge>
                             </div>
                             <div className="text-sm text-muted-foreground">{leg.distance} km</div>
@@ -247,11 +247,11 @@ const RelayDetail = () => {
                         ))}
                       </div>
                     </div>
-                    
+
                     {selectedLeg && (
                       <DragDropContext onDragEnd={handleDragEnd}>
                         <div>
-                          <h3 className="font-medium mb-2">Drag Runners to Teams</h3>
+                          <h3 className="font-medium mb-2">{t('relays.details.dragRunners')}</h3>
                           <div className="space-y-4">
                             <Droppable droppableId="runner-pool">
                               {(provided) => (
@@ -260,7 +260,7 @@ const RelayDetail = () => {
                                   {...provided.droppableProps}
                                   className="p-2 border border-dashed rounded-md bg-muted/50 min-h-[100px]"
                                 >
-                                  <h4 className="text-sm font-medium mb-2">Available Runners</h4>
+                                  <h4 className="text-sm font-medium mb-2">{t('relays.details.availableRunners')}</h4>
                                   {availableRunners.length > 0 ? (
                                     <div className="space-y-1">
                                       {availableRunners.map((runner, index) => (
@@ -280,14 +280,14 @@ const RelayDetail = () => {
                                     </div>
                                   ) : (
                                     <div className="text-sm text-muted-foreground text-center py-4">
-                                      No available runners
+                                      {t('relays.details.noAvailableRunners')}
                                     </div>
                                   )}
                                   {provided.placeholder}
                                 </div>
                               )}
                             </Droppable>
-                            
+
                             <div className="grid grid-cols-2 gap-2">
                               {[1, 2].map(teamNum => (
                                 <Droppable droppableId={`team-${teamNum}`} key={teamNum}>
@@ -297,7 +297,7 @@ const RelayDetail = () => {
                                       {...provided.droppableProps}
                                       className="p-2 border border-dashed rounded-md min-h-[80px]"
                                     >
-                                      <h4 className="text-sm font-medium mb-2">Team {teamNum}</h4>
+                                      <h4 className="text-sm font-medium mb-2">{t('relays.details.team')} {teamNum}</h4>
                                       {provided.placeholder}
                                     </div>
                                   )}
@@ -317,59 +317,59 @@ const RelayDetail = () => {
       </div>
 
       <div className="bg-card/50 backdrop-blur-sm border border-border p-4 rounded-lg mb-6">
-        <h3 className="font-medium mb-2">Runner Assignment Progress</h3>
+        <h3 className="font-medium mb-2">{t('relays.details.progress')}</h3>
         <div className="flex justify-between text-sm mb-1">
-          <span>{totalAssignments} runners assigned</span>
-          <span>{totalNeededRunners} total positions</span>
+          <span>{t('relays.details.runnersAssigned', { count: totalAssignments })}</span>
+          <span>{t('relays.details.totalPositions', { count: totalNeededRunners })}</span>
         </div>
         <Progress value={(totalAssignments / totalNeededRunners) * 100} className="h-2" />
       </div>
 
       <Tabs defaultValue="overview" value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="legs">Legs</TabsTrigger>
-          <TabsTrigger value="runners">Assigned Runners</TabsTrigger>
+          <TabsTrigger value="overview">{t('relays.details.overview')}</TabsTrigger>
+          <TabsTrigger value="legs">{t('relays.details.legs')}</TabsTrigger>
+          <TabsTrigger value="runners">{t('relays.details.runners')}</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="overview" className="mt-6">
           {selectedRelay.description && (
             <Card className="mb-6">
               <CardHeader>
-                <CardTitle>Description</CardTitle>
+                <CardTitle>{t('relays.details.description')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p>{selectedRelay.description}</p>
               </CardContent>
             </Card>
           )}
-          
+
           <Card>
             <CardHeader>
-              <CardTitle>Summary</CardTitle>
+              <CardTitle>{t('relays.details.summary')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="flex items-center gap-2">
                   <Route className="h-5 w-5 text-compass" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Total Legs</p>
+                    <p className="text-sm text-muted-foreground">{t('relays.details.totalLegs')}</p>
                     <p className="font-medium">{selectedRelay.legs.length}</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <Users className="h-5 w-5 text-compass" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Runners Assigned</p>
+                    <p className="text-sm text-muted-foreground">{t('relays.details.runnersAssigned')}</p>
                     <p className="font-medium">{totalAssignments} / {totalNeededRunners}</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <Mountain className="h-5 w-5 text-compass" />
                   <div>
-                    <p className="text-sm text-muted-foreground">Total Distance</p>
+                    <p className="text-sm text-muted-foreground">{t('relays.details.totalDistance')}</p>
                     <p className="font-medium">
                       {selectedRelay.legs.reduce((sum, leg) => sum + leg.distance, 0).toFixed(1)} km
                     </p>
@@ -379,7 +379,7 @@ const RelayDetail = () => {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="legs" className="mt-6">
           <div className="grid gap-4">
             {selectedRelay.legs.map((leg) => (
@@ -388,9 +388,9 @@ const RelayDetail = () => {
                   <div className="flex flex-col md:flex-row justify-between gap-4">
                     <div>
                       <h3 className="font-bold flex items-center gap-2">
-                        Leg {leg.legNumber}
+                        {t('relays.details.leg')} {leg.legNumber}
                         <Badge className={`${difficultyColors[leg.difficulty]} text-xs px-2 py-0.5 rounded-full text-black`}>
-                          {leg.difficulty}
+                          {t(`relays.details.difficulty.${leg.difficulty.toLowerCase()}`)}
                         </Badge>
                       </h3>
                       <div className="mt-1 grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
@@ -400,7 +400,7 @@ const RelayDetail = () => {
                         </div>
                         {leg.timeOfDay && (
                           <div>
-                            <span className="text-muted-foreground">Time: </span>
+                            <span className="text-muted-foreground">{t('relays.details.time')}: </span>
                             {leg.timeOfDay}
                           </div>
                         )}
@@ -415,23 +415,23 @@ const RelayDetail = () => {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="min-w-[200px]">
                       <div className="text-sm font-medium mb-2">
-                        {leg.assignedRunners?.length || 0} Runner{leg.assignedRunners?.length !== 1 && 's'} Assigned
+                        {leg.assignedRunners?.length || 0} {t('relays.details.runner', { count: leg.assignedRunners?.length })}
                       </div>
                       {leg.assignedRunners && leg.assignedRunners.length > 0 ? (
                         <div className="space-y-1">
                           {leg.assignedRunners.map((assignment) => (
                             <div key={assignment.runnerId} className="text-sm p-1.5 bg-muted rounded-md flex justify-between">
                               <span>{assignment.runnerName}</span>
-                              <span className="text-muted-foreground">Team {assignment.teamNumber}</span>
+                              <span className="text-muted-foreground">{t('relays.details.team')} {assignment.teamNumber}</span>
                             </div>
                           ))}
                         </div>
                       ) : (
                         <Button size="sm" variant="outline" className="w-full">
-                          Assign Runner
+                          {t('relays.details.assignRunner')}
                         </Button>
                       )}
                     </div>
@@ -441,11 +441,11 @@ const RelayDetail = () => {
             ))}
           </div>
         </TabsContent>
-        
+
         <TabsContent value="runners" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Assigned Runners</CardTitle>
+              <CardTitle>{t('relays.details.assignedRunners')}</CardTitle>
             </CardHeader>
             <CardContent>
               {selectedRelay.legs.some(leg => leg.assignedRunners && leg.assignedRunners.length > 0) ? (
@@ -454,20 +454,20 @@ const RelayDetail = () => {
                     .filter(leg => leg.assignedRunners && leg.assignedRunners.length > 0)
                     .map((leg) => (
                       <div key={leg.id} className="border-b last:border-b-0 pb-4 last:pb-0">
-                        <h3 className="font-medium mb-2">Leg {leg.legNumber} - {leg.distance} km</h3>
+                        <h3 className="font-medium mb-2">{t('relays.details.leg')} {leg.legNumber} - {leg.distance} km</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                           {leg.assignedRunners!.map((assignment) => {
                             const runner = runners.find(r => r.id === assignment.runnerId);
                             return (
-                              <div 
-                                key={assignment.runnerId} 
+                              <div
+                                key={assignment.runnerId}
                                 className="p-3 bg-muted rounded-md flex justify-between items-center"
                               >
                                 <div>
                                   <div className="font-medium">{runner?.name}</div>
                                   <div className="text-sm text-muted-foreground">{runner?.club}</div>
                                 </div>
-                                <Badge>Team {assignment.teamNumber}</Badge>
+                                <Badge>{t('relays.details.team')} {assignment.teamNumber}</Badge>
                               </div>
                             );
                           })}
@@ -477,9 +477,9 @@ const RelayDetail = () => {
                 </div>
               ) : (
                 <div className="text-center py-6">
-                  <p className="text-muted-foreground">No runners have been assigned yet.</p>
+                  <p className="text-muted-foreground">{t('relays.details.noRunnersAssigned')}</p>
                   <Button className="mt-4 bg-compass hover:bg-compass-dark">
-                    Assign Runners
+                    {t('runners.assignRunner')}
                   </Button>
                 </div>
               )}

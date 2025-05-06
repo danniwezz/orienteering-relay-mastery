@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +8,7 @@ import { useAppContext } from '@/contexts/AppContext';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import SubmissionForm from './SubmissionForm';
+import { useTranslation } from 'react-i18next';
 
 interface RelayCardProps {
   relay: Relay;
@@ -24,13 +24,14 @@ const RelayCard = ({ relay }: RelayCardProps) => {
   const { setSelectedRelay } = useAppContext();
   const navigate = useNavigate();
   const [submissionDialogOpen, setSubmissionDialogOpen] = useState(false);
+  const { t } = useTranslation();
 
   const totalRunners = relay.legs.reduce(
     (sum, leg) => sum + (leg.assignedRunners?.length || 0), 0
   );
-  
+
   const totalLegs = relay.legs.length;
-  
+
   const handleViewDetails = () => {
     setSelectedRelay(relay);
     navigate(`/relay/${relay.id}`);
@@ -41,58 +42,58 @@ const RelayCard = ({ relay }: RelayCardProps) => {
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg font-bold text-foreground">{relay.name}</CardTitle>
-          <Badge className={`${statusColors[relay.status]} text-xs px-2 py-1 rounded-full`}>
-            {relay.status}
+          <Badge className="text-xs px-2 py-1 rounded-full">
+            {t(`common.status.${relay.status.toLowerCase()}`)}
           </Badge>
         </div>
         <CardDescription className="text-muted-foreground flex items-center gap-1">
-          <Calendar className="h-3 w-3" /> {relay.date}
+          <MapPin className="h-3 w-3" /> {relay.location}
         </CardDescription>
         <CardDescription className="text-muted-foreground flex items-center gap-1">
-          <MapPin className="h-3 w-3" /> {relay.location}
+          <Calendar className="h-3 w-3" /> {relay.date}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mt-1">
           <div className="flex items-center justify-between text-sm text-foreground">
             <span className="flex items-center gap-1">
-              <Users className="h-4 w-4" /> 
-              {totalRunners} runners assigned
+              <Users className="h-4 w-4" />
+              {t('relays.details.runnersAssigned', { count: totalRunners })}
             </span>
-            <span>{totalLegs} legs</span>
+            <span>{t('relays.details.totalLegs', { count: totalLegs })}</span>
           </div>
           <div className="w-full h-2 bg-muted rounded-full mt-2 overflow-hidden">
-            <div 
-              className="h-full bg-compass" 
+            <div
+              className="h-full bg-compass"
               style={{ width: `${(totalRunners / (totalLegs * 2)) * 100}%` }}
             ></div>
           </div>
         </div>
       </CardContent>
       <CardFooter className="pt-0 flex gap-2">
-        <Button 
-          variant="outline" 
-          size="sm" 
+        <Button
+          variant="outline"
+          size="sm"
           onClick={handleViewDetails}
           className="flex-1 border-terrain/30 hover:border-terrain hover:bg-terrain/10"
         >
-          View Details
+          {t('relays.viewDetails')}
         </Button>
-        
+
         <Dialog open={submissionDialogOpen} onOpenChange={setSubmissionDialogOpen}>
           <DialogTrigger asChild>
-            <Button 
-              variant="secondary" 
+            <Button
+              variant="secondary"
               size="sm"
               className="flex-1"
             >
-              Submit Interest
+              {t('relays.submitInterest')}
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[700px]">
-            <SubmissionForm 
-              relayId={relay.id} 
-              onClose={() => setSubmissionDialogOpen(false)} 
+            <SubmissionForm
+              relayId={relay.id}
+              onClose={() => setSubmissionDialogOpen(false)}
             />
           </DialogContent>
         </Dialog>

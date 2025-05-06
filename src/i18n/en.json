@@ -1,0 +1,111 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search...",
+    "backToHome": "Back to Home",
+    "status": {
+      "all": "All",
+      "upcoming": "Upcoming",
+      "active": "Active",
+      "completed": "Completed"
+    }
+  },
+  "navigation": {
+    "relays": "Relays",
+    "runners": "Runners",
+    "clubs": "Clubs",
+    "results": "Results",
+    "settings": "Settings"
+  },
+  "relays": {
+    "title": "Orienteering Relays",
+    "createNew": "Create New Relay",
+    "viewDetails": "View Details",
+    "submitInterest": "Submit Interest",
+    "details": {
+      "legs": "Legs",
+      "runners": "Runners",
+      "overview": "Overview",
+      "description": "Description",
+      "location": "Location",
+      "date": "Date",
+      "totalLegs": "Total Legs",
+      "runnersAssigned": "{{count}} runners assigned",
+      "totalDistance": "Total Distance",
+      "totalPositions": "{{count}} total positions"
+    }
+  },
+  "runners": {
+    "title": "Runners",
+    "createNew": "Add New Runner",
+    "assignRunner": "Assign Runner",
+    "experience": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "elite": "Elite"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": {
+      "title": "Appearance",
+      "description": "Customize how OLMan25 looks",
+      "theme": {
+        "title": "Theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+      }
+    },
+    "language": {
+      "title": "Language & Region",
+      "description": "Set your preferred language",
+      "select": "Select language"
+    },
+    "defaultClub": {
+      "title": "Default Club",
+      "description": "Choose your primary club",
+      "select": "Select club"
+    }
+  },
+  "notFound": {
+    "title": "Off the Map!",
+    "description": "Looks like you've wandered off the trail. This checkpoint doesn't exist on our map.",
+    "backToHome": "Return to Base Camp"
+  },      
+  "errors": {
+    "pageNotFound": "Sorry, we couldn't find the page you're looking for.",
+    "translationError": "There was an error loading translations.",
+    "generalError": "An error occurred.",
+    "tryAgain": "Please try again"
+  },
+  "auth": {
+    "welcome": "Welcome back",
+    "description": "Enter your credentials to access your account",
+    "signIn": "Sign In",
+    "createAccount": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "orContinueWith": "or continue with",
+    "agreeTerms": "By creating an account, you agree to our",
+    "termsOfService": "Terms of Service",
+    "privacyPolicy": "Privacy Policy"
+  }
+}
