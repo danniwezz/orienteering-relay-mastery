@@ -1,9 +1,9 @@
-
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Club } from '@/types';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Users, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface ClubCardProps {
   club: Club;
@@ -11,6 +11,7 @@ interface ClubCardProps {
 
 const ClubCard = ({ club }: ClubCardProps) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleViewDetails = () => {
     navigate(`/club/${club.id}`);
@@ -30,22 +31,22 @@ const ClubCard = ({ club }: ClubCardProps) => {
       <CardContent>
         <div className="flex items-center gap-1 text-sm">
           <Users className="h-4 w-4" />
-          <span>{club.runners.length} runners</span>
+          <span>{t('clubs.runnersCount', { count: club.runners.length })}</span>
         </div>
         {club.relays && club.relays.length > 0 && (
           <div className="mt-2 text-sm">
-            <span className="text-muted-foreground">Active in {club.relays.length} relays</span>
+            <span className="text-muted-foreground">{t('clubs.activeRelays', { count: club.relays.length })}</span>
           </div>
         )}
       </CardContent>
       <CardFooter className="pt-2">
-        <Button 
-          variant="outline" 
-          size="sm" 
+        <Button
+          variant="outline"
+          size="sm"
           onClick={handleViewDetails}
           className="w-full border-terrain/30 hover:border-terrain hover:bg-terrain/10"
         >
-          View Club
+          {t('clubs.viewClub')}
         </Button>
       </CardFooter>
     </Card>

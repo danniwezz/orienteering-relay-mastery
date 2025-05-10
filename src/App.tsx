@@ -14,6 +14,8 @@ import RelayDetail from "./pages/RelayDetail";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import CreateTeam from './pages/relay/CreateTeam';
+import SubmitRunner from './pages/relay/SubmitRunner';
 
 // Translations
 import { I18nextProvider } from 'react-i18next';
@@ -81,6 +83,16 @@ const App = () => {
                         <Route path="/settings" element={
                           <ProtectedRoute>
                             <Settings />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="/relay/:relayId/create-team" element={
+                          <ProtectedRoute>
+                            <CreateTeam />
+                          </ProtectedRoute>
+                        } />
+                        <Route path="/relay/:relayId/submit" element={
+                          <ProtectedRoute>
+                            <SubmitRunner />
                           </ProtectedRoute>
                         } />
                         <Route path="*" element={<NotFound />} />

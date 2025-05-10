@@ -1,0 +1,44 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Cursor Rules
+
+## Creating a React Component
+
+1. Carefully consider the component's purpose, functionality, and design.
+
+2. Think step by step, and outline your reasoning clearly.
+
+3. Check if a similar component already exists in any of the following locations:
+   - src/components/ui
+   - src/components
+
+4. If it doesn't exist, generate a detailed prompt that includes:
+   - Component name and purpose
+   - Desired props and their types
+   - Specific styling or behavior requirements
+   - Note that we use `lucide-react` and `radix-ui` for UI components
+   - Request usage of TypeScript
+
+5. URL-encode the prompt.
+
+6. Create a clickable reference using this format:
+   `@ComponentName`
+
+7. Us project color palette for consistency.
+
+8. After generating, adapt the component to fit our project structure:
+   - Import:
+     - Common `shadcn/ui` components from `@/components/ui`
+     - App-specific components from `@/components`
+   - Ensure it follows our existing component patterns
+   - Add any necessary custom logic or state management
+
+### Example prompt template:
+Create a React component named {ComponentName} using TypeScript and Tailwind CSS.
+It should {describe the functionality}.
+Props should include {list of props with types}.
+The component should {any specific styling or behavior notes}.
+Please provide the full component code.

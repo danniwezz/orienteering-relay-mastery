@@ -1,14 +1,91 @@
+// Enums for consistent string values
+export enum Gender {
+  Male = 'Male',
+  Female = 'Female',
+  Other = 'Other'
+}
+
+export enum ExperienceLevel {
+  Beginner = 'Beginner',
+  Intermediate = 'Intermediate',
+  Advanced = 'Advanced',
+  Elite = 'Elite'
+}
+
+export enum RelayStatus {
+  Upcoming = 'Upcoming',
+  Active = 'Active',
+  Completed = 'Completed'
+}
+
+export enum Difficulty {
+  Easy = 'Easy',
+  Medium = 'Medium',
+  Hard = 'Hard',
+  VeryHard = 'VeryHard'
+}
+
+export enum TimeOfDay {
+  Morning = 'Morning',
+  Afternoon = 'Afternoon',
+  Evening = 'Evening',
+  Night = 'Night'
+}
+
+export enum AssignmentStatus {
+  Assigned = 'Assigned',
+  Confirmed = 'Confirmed',
+  Declined = 'Declined',
+  Completed = 'Completed'
+}
+
+export enum UserRole {
+  Admin = 'Admin',
+  ClubAdmin = 'ClubAdmin',
+  Runner = 'Runner'
+}
 
 export interface Runner {
   id: string;
   name: string;
   club: string;
   age?: number;
-  gender?: 'Male' | 'Female' | 'Other';
+  gender?: Gender;
   contactEmail?: string;
-  experience?: 'Beginner' | 'Intermediate' | 'Advanced' | 'Elite';
+  experience?: ExperienceLevel;
   preferenceTags?: string[];
   previousResults?: RelayResult[];
+}
+
+export interface Team {
+  id: string;
+  clubId: string;
+  relayId: string;
+  name: string;
+  runners: {
+    runnerId: string;
+    legId: string;
+  }[];
+}
+
+export interface Submission {
+  id: string;
+  relayId: string;
+  runnerId: string;
+  teamId: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  submittedAt: string;
+}
+
+export interface RelayFile {
+  id: string;
+  relayId: string;
+  fileName: string;
+  fileType: string;
+  fileSize: number;
+  url: string;
+  uploadedAt: string;
+  uploadedBy: string;
 }
 
 export interface Relay {
@@ -16,11 +93,22 @@ export interface Relay {
   name: string;
   date: string;
   location: string;
-  description?: string;
-  legs: Leg[];
   status: 'Upcoming' | 'Active' | 'Completed';
-  resultsLink?: string;
-  importedData?: boolean;
+  clubId: string;
+  legs: {
+    id: string;
+    number: number;
+    distance: number;
+    climb: number;
+    difficulty?: Difficulty;
+    timeOfDay?: TimeOfDay;
+    terrainType?: string[];
+    assignedRunners?: RunnerAssignment[];
+  }[];
+  teams?: Team[];
+  submissions?: Submission[];
+  description?: string;
+  files?: RelayFile[];
 }
 
 export interface Leg {
@@ -28,8 +116,8 @@ export interface Leg {
   relayId: string;
   legNumber: number;
   distance: number;
-  difficulty: 'Easy' | 'Medium' | 'Hard' | 'Very Hard';
-  timeOfDay?: 'Morning' | 'Afternoon' | 'Evening' | 'Night';
+  difficulty: Difficulty;
+  timeOfDay?: TimeOfDay;
   terrainType?: string[];
   assignedRunners?: RunnerAssignment[];
 }
@@ -39,7 +127,7 @@ export interface RunnerAssignment {
   runnerName: string;
   legId: string;
   teamNumber: number;
-  status: 'Assigned' | 'Confirmed' | 'Declined' | 'Completed';
+  status: AssignmentStatus;
 }
 
 export interface Club {
@@ -66,6 +154,13 @@ export interface User {
   id: string;
   username: string;
   email: string;
-  role: 'Admin' | 'ClubAdmin' | 'Runner';
+  role: UserRole;
   clubIds: string[]; // clubs this user has access to
 }
+
+// Helper functions for translation
+export const difficultyToTranslationKey = (difficulty?: Difficulty): string => {
+  if (!difficulty) return 'medium'; // Default to medium if not specified
+  if (difficulty === Difficulty.VeryHard) return 'veryhard';
+  return difficulty.toLowerCase();
+};

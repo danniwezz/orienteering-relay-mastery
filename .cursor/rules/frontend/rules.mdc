@@ -1,0 +1,16 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Cursor Rules
+
+## You are developing an application in react with radix-ui and lucide-react libraries, use zod for all validation. 
+
+- Use react-query to comminicate with api. If an api is not yet created, create the react-query impementations using the mockdata.
+- The application should have multiple language support. Make sure you add these when implementing new code.
+
+
+
+
+

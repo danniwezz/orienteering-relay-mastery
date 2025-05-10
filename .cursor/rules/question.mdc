@@ -1,0 +1,105 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Cursor Rules
+
+## Using the -q Flag for Question-Driven Solutions
+
+Use the `-q` flag in your prompt when you want a comprehensive, question-led response.
+
+What the -q flag does:
+When -q is used, the AI will respond with:
+- A thorough problem analysis
+- Clarifying questions about ambiguous requirements
+- Alternative approaches with pros and cons
+- Edge case considerations
+- Suggested testing strategies
+
+Example -q prompts:
+-q How should we implement user authentication in our app?
+-q What ’s the best way to handle real-time updates in our relay system?
+-q How can we optimize the performance of our map rendering?
+
+Expected response structure:
+Do not change any code
+1. Problem Analysis
+   - Current situation
+   - Requirements
+   - Constraints
+
+2. Clarifying Questions
+   - What is the expected user load?
+   - Do we need multiple authentication methods?
+   - What are the security requirements?
+
+3. Proposed Solution
+   - Step-by-step plan
+   - Code examples
+   - Best practices
+
+4. Considerations
+   - Performance
+   - Security
+   - Scalability
+
+5. Testing Strategy
+   - Unit tests
+   - Integration tests
+   - Performance tests
+
+---
+
+## Iterative Problem Solving with AI
+
+Use this process for solving complex problems or implementing multi-step features.
+
+1. Start with a clear problem statement:
+   - What’s the goal?
+   - What are the constraints?
+   - What outcome do we expect?
+
+2. Break down the solution into steps:
+   - Ask the AI to outline the plan
+   - Confirm each step before continuing
+
+3. For each step:
+   - Request detailed explanations and code samples
+   - Ask questions when something is unclear
+
+4. Review your implementation:
+   - Ask the AI for feedback
+   - Example: "Can you review this implementation and suggest improvements?"
+
+5. Test and validate:
+   - Ask for relevant test cases
+   - Get debugging support
+
+6. Document:
+   - Ask for inline code comments
+   - Get help writing concise documentation
+
+Example conversation:
+User: I need to implement a feature that allows users to filter a list of items. Can you break down the approach?
+AI: [Provides step-by-step breakdown]
+User: Can you explain step 1 in more detail?
+AI: [Provides detailed explanation]
+User: Here's my implementation. Can you review it?
+AI: [Reviews and suggests improvements]
+User: What test cases should we consider?
+AI: [Provides test cases]
+User: How should we document this?
+AI: [Provides documentation suggestions]
+
+---
+
+Tips:
+- Be specific with your prompts
+- Ask for clarification when needed
+- Request examples to understand better
+- Confirm before moving on
+- Document along the way
+
+
+

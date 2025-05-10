@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/ui/logo';
 import { useTranslation } from 'react-i18next';
 import LanguageIndicator from '../language/LanguageIndicator';
+import UserSelector from '@/components/UserSelector';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +48,7 @@ const Navbar = () => {
               </Link>
             ))}
             <LanguageIndicator />
+            <UserSelector />
           </div>
 
           {/* Mobile menu button */}
@@ -67,6 +69,9 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden mt-4 pt-2 border-t border-forest-light/30">
             <div className="flex flex-col space-y-4 pb-3">
+              <div className="px-2 py-2 mb-2">
+                <UserSelector />
+              </div>
               {navItems.map((item) => (
                 <Link
                   key={item.path}

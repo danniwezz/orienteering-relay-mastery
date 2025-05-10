@@ -1,16 +1,17 @@
-
 import { useState } from 'react';
 import { useAppContext } from '@/contexts/AppContext';
 import ClubCard from '@/components/clubs/ClubCard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { List, Search, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Clubs = () => {
   const { clubs } = useAppContext();
   const [searchTerm, setSearchTerm] = useState('');
+  const { t } = useTranslation();
 
-  const filteredClubs = clubs.filter((club) => 
+  const filteredClubs = clubs.filter((club) =>
     club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (club.location && club.location.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -20,11 +21,11 @@ const Clubs = () => {
       <div className="flex flex-col md:flex-row items-center justify-between mb-6">
         <div className="flex items-center mb-4 md:mb-0">
           <List className="text-compass mr-2 h-6 w-6" />
-          <h1 className="text-2xl font-bold">Clubs</h1>
+          <h1 className="text-2xl font-bold">{t('navigation.clubs')}</h1>
         </div>
         <Button className="bg-compass hover:bg-compass-dark">
           <Plus className="mr-2 h-4 w-4" />
-          Add New Club
+          {t('clubs.createNew')}
         </Button>
       </div>
 
@@ -32,7 +33,7 @@ const Clubs = () => {
         <div className="relative">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search clubs..."
+            placeholder={t('common.search')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-9"
@@ -48,7 +49,7 @@ const Clubs = () => {
         </div>
       ) : (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">No clubs found. Try adjusting your search.</p>
+          <p className="text-muted-foreground">{t('clubs.noClubsFound')}</p>
         </div>
       )}
     </div>

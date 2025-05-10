@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -37,33 +36,33 @@
   }
 
   .dark {
-    /* Greatly improved contrast for dark mode */
+    /* Updated dark theme with no black text */
     --background: 120 15% 15%;
-    --foreground: 210 40% 98%;
+    --foreground: 0 0% 95%;  /* Light gray, almost white */
 
-    --card: 112 15% 20%;
+    --card: 120 15% 20%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 112 15% 20%;
+    --popover: 120 15% 20%;
     --popover-foreground: 0 0% 95%;
 
     --primary: 142 70% 60%;
-    --primary-foreground: 144 80% 10%;
+    --primary-foreground: 0 0% 95%;  /* Changed from dark to light */
 
     --secondary: 35 80% 60%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 112 15% 30%;
-    --muted-foreground: 215 20.2% 80%;
+    --muted: 120 15% 30%;
+    --muted-foreground: 0 0% 85%;  /* Lighter muted text */
 
     --accent: 24 95% 65%;
-    --accent-foreground: 210 40% 98%;
+    --accent-foreground: 0 0% 95%;
 
     --destructive: 0 62.8% 60.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 95%;
 
-    --border: 112 15% 40%;
-    --input: 112 15% 40%;
+    --border: 120 15% 40%;
+    --input: 120 15% 40%;
     --ring: 142 70% 60%;
   }
 }
@@ -75,6 +74,11 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Add this to ensure all text elements use the foreground color */
+  h1, h2, h3, h4, h5, h6, p, span, div {
+    @apply text-foreground;
   }
 }
 

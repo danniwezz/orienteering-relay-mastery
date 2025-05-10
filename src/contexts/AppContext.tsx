@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { mockRelays, mockRunners, mockClubs } from '../data/mockData';
-import { Relay, Runner, Club } from '../types';
+import { Relay, Runner, Club, User, UserRole, AssignmentStatus } from '../types';
 import { useTranslation } from 'react-i18next';
 import '../i18n/config';
 
@@ -22,6 +22,12 @@ interface AppContextType {
   deleteRunner: (runnerId: string) => void;
   assignRunner: (runnerId: string, legId: string, teamNumber: number) => void;
   unassignRunner: (runnerId: string, legId: string) => void;
+  currentUser: User | null;
+  setCurrentUser: (user: User) => void;
+  adminUser: User;
+  clubAdminUser: User;
+  runnerUser: User;
+  testRunnerUser: User;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -34,6 +40,42 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const [selectedRelay, setSelectedRelay] = useState<Relay | null>(null);
   const [language, setLanguage] = useState<string>(localStorage.getItem('language') || 'en');
+
+  // Create test users
+  const adminUser: User = {
+    id: '1',
+    username: 'admin',
+    email: 'admin@example.com',
+    role: UserRole.Admin,
+    clubIds: ['club1', 'club2', 'club3'] // For demo, give access to all clubs
+  };
+
+  const clubAdminUser: User = {
+    id: '2',
+    username: 'clubadmin',
+    email: 'clubadmin@example.com',
+    role: UserRole.ClubAdmin,
+    clubIds: ['club1'] // Only IFK Göteborg
+  };
+
+  const runnerUser: User = {
+    id: 'r1', // This is Jonas Andersson who already has submissions
+    username: 'runner',
+    email: 'runner@example.com',
+    role: UserRole.Runner,
+    clubIds: ['club1'] // IFK Göteborg runner
+  };
+
+  const testRunnerUser: User = {
+    id: 'r6', // This is Anna Bergström who hasn't submitted yet
+    username: 'testrunner',
+    email: 'testrunner@example.com',
+    role: UserRole.Runner,
+    clubIds: ['club1'] // IFK Göteborg runner
+  };
+
+  const [currentUser, setCurrentUser] = useState<User>(adminUser);
+
   const { i18n } = useTranslation();
 
   useEffect(() => {
@@ -155,7 +197,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
           runnerName: runner.name,
           legId,
           teamNumber,
-          status: 'Assigned' as const
+          status: AssignmentStatus.Assigned
         }
       ];
 
@@ -225,6 +267,12 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     deleteRunner,
     assignRunner,
     unassignRunner,
+    currentUser,
+    setCurrentUser,
+    adminUser,
+    clubAdminUser,
+    runnerUser,
+    testRunnerUser,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
